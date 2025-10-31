@@ -17,6 +17,8 @@ Delayed Payments: Manual approval processes taking days
 
 AlgoEscrow solves these problems with blockchain-powered escrow that automatically releases funds when conditions are met, providing security for both parties.
 
+
+
 ✨ Features
 Core Functionality
 Smart Contract Escrow: Funds locked in Algorand smart contracts until work is verified
@@ -31,6 +33,8 @@ Dispute Resolution: Built-in arbitration system for conflict management
 
 Refund Mechanism: Cancel escrow and refund clients if terms aren't met
 
+
+
 Wallet Integration
 Algorand Wallet Support: Connect with Pera Wallet, MyAlgo Wallet, and Defly Wallet
 
@@ -39,6 +43,8 @@ Secure Authentication: Wallet-based authentication for all transactions
 Multi-Signature Support: Optional multi-sig for enterprise clients
 
 Real-Time Balance Tracking: View escrow balances and transaction history
+
+
 
 User Experience
 Intuitive Dashboard: Clean UI for managing active escrows, milestones, and disputes
@@ -51,10 +57,10 @@ Rating & Review System: Transparent feedback mechanism to ensure quality and tru
 
 Notification System: Real-time alerts for milestones, payments, and dispute status
 
+
+
 Platform & Security Features
 All Gig Categories Supported: Tech, creative, writing, marketing, design, video, and more
-
-Skill-Based Job Matching: AI-assisted recommendations based on user skills and experiences
 
 Immutable Blockchain Records: Every escrow transaction and milestone logging stored on-chain
 
