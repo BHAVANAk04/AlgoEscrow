@@ -35,7 +35,8 @@ Refund Mechanism: Cancel escrow and refund clients if terms aren't met
 
 
 
-Wallet Integration
+-Wallet Integration
+
 Algorand Wallet Support: Connect with Pera Wallet, MyAlgo Wallet, and Defly Wallet
 
 Secure Authentication: Wallet-based authentication for all transactions
@@ -46,7 +47,7 @@ Real-Time Balance Tracking: View escrow balances and transaction history
 
 
 
-User Experience
+-User Experience
 Intuitive Dashboard: Clean UI for managing active escrows, milestones, and disputes
 
 Job Marketplace: Browse and apply for freelance gigs across all categories
@@ -59,7 +60,7 @@ Notification System: Real-time alerts for milestones, payments, and dispute stat
 
 
 
-Platform & Security Features
+-Platform & Security Features
 All Gig Categories Supported: Tech, creative, writing, marketing, design, video, and more
 
 Immutable Blockchain Records: Every escrow transaction and milestone logging stored on-chain
