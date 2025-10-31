@@ -3,6 +3,8 @@ WorknHire
 A decentralized escrow marketplace built on Algorand blockchain that ensures secure, transparent, and trustless transactions between freelancers and clients. This eliminates payment fraud, unpaid work, and trust issues by leveraging smart contracts for automated fund release based on milestone completion.
 
 🌟 Why AlgoEscrow?
+
+
 Traditional freelance platforms suffer from:
 
 Payment Fraud: Clients disappearing after work completion
@@ -20,7 +22,10 @@ AlgoEscrow solves these problems with blockchain-powered escrow that automatical
 
 
 ✨ Features
+
 Core Functionality
+
+
 Smart Contract Escrow: Funds locked in Algorand smart contracts until work is verified
 
 Milestone-Based Payments: Break projects into milestones with incremental fund releases
@@ -47,7 +52,9 @@ Real-Time Balance Tracking: View escrow balances and transaction history
 
 
 
+
 -User Experience
+
 Intuitive Dashboard: Clean UI for managing active escrows, milestones, and disputes
 
 Job Marketplace: Browse and apply for freelance gigs across all categories
@@ -60,7 +67,9 @@ Notification System: Real-time alerts for milestones, payments, and dispute stat
 
 
 
+
 -Platform & Security Features
+
 All Gig Categories Supported: Tech, creative, writing, marketing, design, video, and more
 
 Immutable Blockchain Records: Every escrow transaction and milestone logging stored on-chain
