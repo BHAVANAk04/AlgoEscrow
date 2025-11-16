@@ -139,10 +139,10 @@ const Navbar = ({ isScrolled }) => {
                 </div>
             </div>
 
-            {/* Desktop Right - Sell Algo */}
-            <div className="hidden md:flex items-center">
+            {/* Desktop Right - Sell Algo & Login */}
+            <div className="hidden md:flex items-center gap-4">
                 <svg
-                    className={`h-6 w-6 mr-6 cursor-pointer ${isScrolled ? 'text-gray-700 hover:text-teal-600' : baseTextColor}`}
+                    className={`h-6 w-6 mr-2 cursor-pointer ${isScrolled ? 'text-gray-700 hover:text-teal-600' : baseTextColor}`}
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -160,6 +160,14 @@ const Navbar = ({ isScrolled }) => {
                     }`}
                 >
                     Sell Algo
+                </a>
+                <a
+                    href="/auth"
+                    className={`px-6 py-2 rounded-full font-semibold transition-all duration-500 ${
+                        isScrolled ? 'text-teal-600 border-2 border-teal-600 hover:bg-teal-600 hover:text-white' : 'border-2 border-white text-white hover:bg-white hover:text-teal-600'
+                    }`}
+                >
+                    Login
                 </a>
             </div>
 
@@ -220,6 +228,13 @@ const Navbar = ({ isScrolled }) => {
                     onClick={() => setIsMenuOpen(false)}
                 >
                     Sell Algo
+                </a>
+                <a
+                    href="/auth"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="border-2 border-teal-600 text-teal-600 px-8 py-2.5 rounded-full font-semibold text-lg transition-all duration-500 hover:bg-teal-600 hover:text-white"
+                >
+                    Login
                 </a>
             </div>
         </nav>

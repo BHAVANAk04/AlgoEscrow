@@ -2,9 +2,9 @@ import React, { useState, useMemo, useEffect } from 'react';
 // Import all necessary icons
 import { Search, Clock, DollarSign, Star, Briefcase, ChevronDown, Calendar, Code, ArrowLeft, Link as LinkIcon, Send, X, UserPlus, Mail, Globe, Image as ImageIcon, Award, Linkedin, ExternalLink } from 'lucide-react';
 // --- FIREBASE IMPORTS ---
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, getDocs } from 'firebase/firestore';
-import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
+import { db, auth } from '../firebase';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 // --- END FIREBASE IMPORTS ---
 
 
@@ -62,21 +62,7 @@ const getComparableRate = (rateString) => {
     return match ? parseFloat(match[1]) : 0;
 };
 
-// --- FIREBASE CONFIGURATION AND INITIALIZATION ---
-const firebaseConfig = {
-    apiKey: "AIzaSyBc7x8gddDmeCztU8S0TStIbj3VUg5I6Gk",
-    authDomain: "algoescrow.firebaseapp.com",
-    projectId: "algoescrow",
-    storageBucket: "algoescrow.firebasestorage.app",
-    messagingSenderId: "112755487139",
-    appId: "1:112755487139:web:17ffd1a212ffcbe95dea16",
-    measurementId: "G-XSXPX5Z2CN"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const appId = firebaseConfig.projectId;
+// ...existing code...
 
 // 🌟 GLOBAL INPUT STYLE CONSTANT 🌟
 const inputStyle = "mt-1 block w-full rounded-lg border border-gray-300 shadow-sm p-3 focus:ring-teal-500 focus:border-teal-500 text-gray-700";

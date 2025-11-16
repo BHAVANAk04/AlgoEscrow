@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Briefcase } from 'lucide-react';
 // --- CORRECTED IMPORT PATH for reliable resolution ---
-import featuredJobsData from '/src/assets/dummy.json'; 
+import featuredJobsData from '../assets/dummy.json'; 
 
 // Helper component for the job type label
 const JobTypeLabel = ({ type }) => {

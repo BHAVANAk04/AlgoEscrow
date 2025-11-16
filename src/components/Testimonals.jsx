@@ -1,7 +1,8 @@
 import React from "react";
 
-const Testimonals = () => {
-    const cardsData = [
+const Testimonals = ({ data = [], loading = false, error = null }) => {
+    // Use Firebase data if available, otherwise use hardcoded fallback data
+    const cardsData = data && data.length > 0 ? data : [
         {
             image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200',
             name: 'Rajesh Kumar',

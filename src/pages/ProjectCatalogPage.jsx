@@ -1,33 +1,21 @@
 import React, { useState, useEffect } from 'react';
 // Link is imported and used for the Buy Now button
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, Package, DollarSign, Star, ChevronDown, CheckCircle, Code, ShoppingCart, Eye, X, Send, Link as LinkIcon, Image as ImageIcon, QrCode } from 'lucide-react';
 
 // --- FIREBASE IMPORTS ---
-import { initializeApp } from "firebase/app";
-// Import onSnapshot and collection for real-time and writing
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
-// 🌟 FIX: NEW Firebase Storage Imports 🌟
+import { db, auth } from '../firebase';
+import app from '../firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 
-// --- FIREBASE CONFIG ---
-const firebaseConfig = {
-    apiKey: "AIzaSyBc7x8gddDmeCztU8S0TStIbj3VUg5I6Gk",
-    authDomain: "algoescrow.firebaseapp.com",
-    projectId: "algoescrow",
-    storageBucket: "algoescrow.firebasestorage.app", // This is important for Storage!
-    messagingSenderId: "112755487139",
-    appId: "1:112755487139:web:17ffd1a212ffcbe95dea16",
-    measurementId: "G-XSXPX5Z2CN"
-};
-
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-// 🌟 FIX: Initialize Firebase Storage 🌟
 const storage = getStorage(app);
 const projectsCollectionRef = collection(db, "projects");
 
 // --- INLINE INITIAL MOCK DATA ---
+// Using a valid Algorand testnet address for demo
+const DEMO_SELLER_ADDRESS = "7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q";
+
 const initialProjectData = [
     {
         "id": 1,
@@ -40,7 +28,8 @@ const initialProjectData = [
         "tags": ["Figma", "React", "Design", "DAO"],
         "rating": 4.9,
         "demoLink": "https://tailwindui.com/components",
-        "qrCodeUrl": "https://placehold.co/150x150/228B22/FFFFFF?text=QR1" // Mock QR Code URL
+        "qrCodeUrl": "https://placehold.co/150x150/228B22/FFFFFF?text=QR1", // Mock QR Code URL
+        "sellerAddress": DEMO_SELLER_ADDRESS
     },
     {
         "id": 2,
@@ -53,7 +42,8 @@ const initialProjectData = [
         "tags": ["PyTeal", "Beaker", "Security", "Algorand"],
         "rating": 4.7,
         "demoLink": "https://algorand.com",
-        "qrCodeUrl": "https://placehold.co/150x150/228B22/FFFFFF?text=QR2"
+        "qrCodeUrl": "https://placehold.co/150x150/228B22/FFFFFF?text=QR2",
+        "sellerAddress": DEMO_SELLER_ADDRESS
     },
     // ... other mock projects remain here ...
     {
@@ -67,7 +57,8 @@ const initialProjectData = [
         "tags": ["CSS", "Design", "Theme"],
         "rating": 4.6,
         "demoLink": "https://tailwind.com/theme/preview",
-        "qrCodeUrl": "https://placehold.co/150x150/228B22/FFFFFF?text=QR6"
+        "qrCodeUrl": "https://placehold.co/150x150/228B22/FFFFFF?text=QR6",
+        "sellerAddress": DEMO_SELLER_ADDRESS
     }
 ];
 
@@ -84,6 +75,12 @@ const TYPE_OPTIONS = ['UI/UX', 'Smart Contract', 'Full Codebase', 'Code Componen
 
 // --- Helper component for a single project card (HORIZONTAL Layout) ---
 const ProjectCard = ({ project }) => {
+    const navigate = useNavigate();
+
+    const handleBuyNow = () => {
+        navigate(`/project/${project.id}/purchase`, { state: { project } });
+    };
+
     return (
         <div
             className="block bg-white rounded-xl shadow-xl p-4 md:p-6 transition-all duration-300 hover:shadow-2xl hover:border-teal-400 border border-transparent flex items-center justify-between group min-h-[140px]"
@@ -136,14 +133,14 @@ const ProjectCard = ({ project }) => {
                     {project.price}
                 </span>
 
-                {/* BUY NOW Button (Note: The actual purchase flow would display the QR code) */}
-                <Link
-                    to={`/project/${project.id}/purchase`}
+                {/* BUY NOW Button - Now uses navigate with state */}
+                <button
+                    onClick={handleBuyNow}
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full shadow-md
                         text-white bg-teal-600 hover:bg-teal-700 transition-colors flex-shrink-0"
                 >
                     <ShoppingCart className="w-4 h-4 mr-2" /> Buy Now
-                </Link>
+                </button>
 
                 {/* View Demo Button (Opens external site in new tab) */}
                 <a
@@ -164,16 +161,33 @@ const ProjectCard = ({ project }) => {
 const uploadFileAndGetUrl = async (file, folderName) => {
     if (!file) return null;
 
+    // Validate file type (must be image)
+    const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (!validTypes.includes(file.type)) {
+        throw new Error(`Invalid file type. Only PNG and JPEG images are allowed. Got: ${file.type}`);
+    }
+
+    // Validate file size (max 5MB)
+    const maxSizeBytes = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSizeBytes) {
+        throw new Error(`File size too large. Maximum 5MB allowed. Got: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+    }
+
     // Create a unique file name
     const fileName = `${Date.now()}_${file.name}`;
     const storageRef = ref(storage, `${folderName}/${fileName}`);
 
-    // Upload the file
-    const snapshot = await uploadBytes(storageRef, file);
+    try {
+        // Upload the file
+        const snapshot = await uploadBytes(storageRef, file);
 
-    // Get the public URL
-    const downloadURL = await getDownloadURL(snapshot.ref);
-    return downloadURL;
+        // Get the public URL
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        return downloadURL;
+    } catch (uploadError) {
+        console.error("File upload error:", uploadError);
+        throw new Error(`Failed to upload file: ${uploadError.message || 'Unknown error'}`);
+    }
 };
 
 
@@ -189,13 +203,24 @@ const PostProjectForm = ({ onClose }) => {
         logoFile: null,
         // 🌟 NEW STATE FIELD 🌟
         qrCodeImage: null,
+        sellerAddress: '',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        // Trim whitespace for address fields
+        const finalValue = name === 'sellerAddress' ? value.trim() : value;
+        setFormData(prev => ({ ...prev, [name]: finalValue }));
+    };
+
+    // Validate Algorand address format (58 characters, base32)
+    const isValidAlgorandAddress = (address) => {
+        if (!address) return false;
+        const trimmed = address.trim();
+        // Algorand addresses are 58 characters and contain only base32 characters
+        return /^[A-Z2-7]{58}$/.test(trimmed);
     };
 
     const handleFileChange = (e, field) => {
@@ -217,6 +242,23 @@ const PostProjectForm = ({ onClose }) => {
             if (!formData.projectUrl) {
                 // Technically required in the form, but let's be explicit
                 throw new Error("Missing required field: Project/Demo URL.");
+            }
+            if (!formData.sellerAddress) {
+                throw new Error("Missing required field: Seller Address.");
+            }
+            
+            // Validate seller address format
+            if (!isValidAlgorandAddress(formData.sellerAddress)) {
+                throw new Error("Invalid seller address format. Must be a valid 58-character Algorand address (e.g., 7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q).");
+            }
+            
+            // Validate price is positive
+            const price = parseFloat(formData.price);
+            if (isNaN(price) || price <= 0) {
+                throw new Error("Price must be a positive number.");
+            }
+            if (price > 1000000) {
+                throw new Error("Price cannot exceed 1,000,000 ALGO.");
             }
 
             // --- 2. UPLOAD FILES TO FIREBASE STORAGE ---
@@ -245,6 +287,7 @@ const PostProjectForm = ({ onClose }) => {
                 author: 'New Community Post',
                 rating: 5.0,
                 createdAt: new Date(),
+                sellerAddress: formData.sellerAddress,
             };
 
             // --- 4. WRITE DOCUMENT TO FIRESTORE ---
@@ -364,6 +407,15 @@ const PostProjectForm = ({ onClose }) => {
                         </div>
                     </div>
 
+                    {/* Seller Address */}
+                    <div>
+                        <label htmlFor="sellerAddress" className="block text-sm font-medium text-gray-700">Seller Address (Algorand Wallet Address)</label>
+                        <input type="text" name="sellerAddress" id="sellerAddress" required value={formData.sellerAddress} onChange={handleChange} placeholder="e.g., 7ZUECA7HFLZTXENRV24SHLU4AVPUTMTTDUFUBNBD64C73F3UHRTHAIOF6Q" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-teal-500 focus:border-teal-500 font-mono text-xs"/>
+                        <p className="mt-1 text-xs text-gray-500">
+                            Your 58-character Algorand wallet address where payments will be received. Get this from your Pera Wallet or Algorand KMD client.
+                        </p>
+                    </div>
+
                     {/* --- 🌟 NEW: QR Code Upload & Logo Upload --- */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
 
@@ -434,6 +486,7 @@ const ProjectCatalogPage = () => {
                     rating: data.rating || 0.0,
                     demoLink: data.demoLink || '#',
                     qrCodeUrl: data.qrCodeUrl || 'https://placehold.co/150x150/FF0000/FFFFFF?text=MISSING_QR', // Fetch QR code URL
+                    sellerAddress: data.sellerAddress || DEMO_SELLER_ADDRESS,
                 };
             });
 
