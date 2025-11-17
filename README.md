@@ -1,5 +1,5 @@
-WorknHire
-WorknHire is a decentralized freelance marketplace that uses Algorand smart contracts to provide secure, automated, and trustless escrow between clients and freelancers. It eliminates payment fraud, unpaid work, and high commissions by replacing intermediaries with blockchain logic.
+
+**WorknHire** is a decentralized freelance marketplace that uses Algorand smart contracts to provide secure, automated, and trustless escrow between clients and freelancers. It eliminates payment fraud, unpaid work, and high commissions by replacing intermediaries with blockchain logic.
 
 ## **Core Features**
 
@@ -42,6 +42,18 @@ WorknHire is a decentralized freelance marketplace that uses Algorand smart cont
   * **ARC-0020** (Wallet Transaction Signing)
   * **ARC-007** (Wallet Connect Standard)
   * **ARC-0072 / ARC-72** (NFT Standard)
+
+ **Backend**(Firebase)
+
+**Firebase Authentication**
+Handles user login state
+Links Firebase accounts to Algorand wallet addresses
+Stores user roles (client/freelancer)
+
+**Firebase Storage**
+
+Stores project files
+Stores deliverables and attachments safely
 
 ## **Project Structure**
 
