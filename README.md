@@ -50,7 +50,7 @@ Algoescrow/
 │
 ├── src/                   → React components, pages, services, wallet logic
 ├── smart_contracts/       → TEAL/PyTEAL escrow smart contracts
-├── dist/                  → Production build (auto-generated)
+├── dist/                 
 ├── index.html
 ├── vite.config.js
 └── package.json
