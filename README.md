@@ -46,14 +46,14 @@
  **Backend**(Firebase)
 
 **Firebase Authentication**
-Handles user login state
-Links Firebase accounts to Algorand wallet addresses
-Stores user roles (client/freelancer)
+*Handles user login state
+*Links Firebase accounts to Algorand wallet addresses
+*Stores user roles (client/freelancer)
 
 **Firebase Storage**
 
-Stores project files
-Stores deliverables and attachments safely
+*Stores project files
+*Stores deliverables and attachments safely
 
 ## **Project Structure**
 
