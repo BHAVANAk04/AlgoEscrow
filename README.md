@@ -9,13 +9,11 @@ WorknHire is a decentralized freelance marketplace that uses Algorand smart cont
 * Milestone-based payments
 * Multi-party roles (client, freelancer, arbitrator)
 * Dispute resolution and refund logic
-* Immutable on-chain history
 
 ### **Wallet Integration**
-* Supports Pera Wallet, MyAlgo Wallet, and Defly
+* Supports Pera Wallet.
 * Wallet-based authentication and transaction signing
 * Real-time balance and escrow state tracking
-* Optional multisig support
 
 ### **User Experience**
 * Dashboard for managing escrows, milestones, and disputes
